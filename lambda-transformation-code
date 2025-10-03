@@ -1,0 +1,55 @@
+import json
+import csv
+import boto3
+import os
+
+s3 = boto3.client('s3')
+
+def lambda_handler(event, context):
+    # Get bucket + key from the event
+    source_bucket = event['Records'][0]['s3']['bucket']['name']
+    source_key = event['Records'][0]['s3']['object']['key']
+    
+    target_bucket = "cleaned-zillow-data-csv-ah"
+    target_key = os.path.splitext(source_key)[0] + ".csv"  # same name but .csv
+    
+    # Read JSON from S3
+    obj = s3.get_object(Bucket=source_bucket, Key=source_key)
+    raw_data = json.loads(obj['Body'].read().decode('utf-8'))
+
+    # Extract property list from JSON (under "data")
+    properties = raw_data.get("data", [])
+
+    # Define required columns
+    columns = ['bathrooms', 'bedrooms', 'city', 'homeStatus',
+               'homeType','livingArea','price', 'rentZestimate','zipcode']
+
+    # Build rows with selected fields
+    rows = []
+    for item in properties:
+        rows.append({
+            "bathrooms": item.get("bathrooms"),
+            "bedrooms": item.get("bedrooms"),
+            "city": item.get("address", {}).get("city"),
+            "homeStatus": item.get("listing", {}).get("listingStatus"),
+            "homeType": item.get("propertyType"),
+            "livingArea": item.get("livingArea"),
+            "price": item.get("price", {}).get("value"),
+            "rentZestimate": item.get("estimates", {}).get("rentZestimate"),
+            "zipcode": item.get("address", {}).get("zipcode"),
+        })
+
+    # Write CSV to /tmp (Lambda’s local storage)
+    temp_file = "/tmp/temp.csv"
+    with open(temp_file, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=columns)
+        writer.writeheader()
+        writer.writerows(rows)
+
+    # Upload cleaned CSV to target bucket
+    s3.upload_file(temp_file, target_bucket, target_key)
+
+    return {
+        'statusCode': 200,
+        'body': f" CSV written to {target_bucket}/{target_key}, {len(rows)} rows"
+    }
