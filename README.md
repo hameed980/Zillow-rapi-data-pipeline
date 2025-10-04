@@ -1,7 +1,6 @@
-# 🏗️ End-to-End AWS Data Pipeline (Zillow + RapidAPI + Airflow + Lambda + Redshift + QuickSight)
+## End-to-End AWS Data Pipeline (Zillow + RapidAPI + Airflow + Lambda + Redshift + QuickSight)
 
-![Pipeline Architecture](<img width="1484" height="529" alt="image" src="https://github.com/user-attachments/assets/7b544852-659d-4d24-ac38-c4ea598eccf2" />
-)
+![Pipeline Architecture](<img width="1484" height="529" alt="image" src="https://github.com/user-attachments/assets/7b544852-659d-4d24-ac38-c4ea598eccf2" />)
 
 ## 📖 Project Overview
 This project demonstrates how to build a **real-time, end-to-end data pipeline** on AWS.  
@@ -32,5 +31,3 @@ The pipeline leverages **Apache Airflow**, **AWS Lambda**, and **Amazon S3 bucke
 - **RapidAPI (Zillow API)** (Data Source)
 
 ---
-
-## 📂 Project Structure
