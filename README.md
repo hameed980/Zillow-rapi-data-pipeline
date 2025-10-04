@@ -58,27 +58,27 @@ The architecture follows a multi-zone S3 design (Landing → Intermediate → Tr
 
 - Created QuickSight dashboards for real estate trends (e.g., avg price per city, rent vs. sale prices, home types).
 
-### Challenges & Solutions
+## Challenges & Solutions
 
-###### Nested JSON Structure
+#### - Nested JSON Structure
 
 - Problem: API returned deeply nested JSON with unused fields.
 
 - Solution: Lambda script flattened the JSON and kept only relevant attributes (bathrooms, bedrooms, city, homeStatus, homeType, livingArea, price, rentZestimate, zipcode).
 
-###### Lambda Trigger Race Condition
+#### Lambda Trigger Race Condition
 
 - Problem: Lambda triggered before file upload completed in S3, causing empty reads.
 
 - Solution: Added object_exists waiter to ensure file was available before processing.
 
-###### Airflow AWS Connection Issue
+#### Airflow AWS Connection Issue
 
 - Problem: Airflow UI didn’t show Access/Secret Key fields.
 
 - Solution: Configured AWS credentials via environment variables and used them in Airflow connections.
 
-###### QuickSight Dataset Refresh
+#### QuickSight Dataset Refresh
 
 - Problem: QuickSight dashboards didn’t reflect latest Redshift updates.
 
