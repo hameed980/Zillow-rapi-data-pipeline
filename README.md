@@ -8,27 +8,27 @@
 ### Project Overview
 
 
---- This project demonstrates how to build an end-to-end data pipeline on AWS.
+ **This project demonstrates how to build an end-to-end data pipeline on AWS**.
 
-We extract real estate data from the Zillow RapidAPI, process and transform it with AWS Lambda, orchestrate workflows using Apache Airflow, and load the cleaned data into Amazon Redshift. Finally, we visualize insights through Amazon QuickSight dashboards.
+- We extract real estate data from the Zillow RapidAPI, process and transform it with AWS Lambda, orchestrate workflows using Apache Airflow, and load the cleaned data into Amazon Redshift. Finally, we visualize insights through Amazon QuickSight dashboards.
 
 The architecture follows a multi-zone S3 design (Landing → Intermediate → Transformed) to separate raw, staged, and cleaned data layers.
 
-⚙️ Architecture Workflow
+### Architecture Workflow
 
-Extract: Zillow data is fetched via RapidAPI using a Python script scheduled in Apache Airflow.
+- Extract: Zillow data is fetched via RapidAPI using a Python script scheduled in Apache Airflow.
 
-Landing Zone (Raw Data): Raw JSON response is stored in the first S3 bucket.
+- Landing Zone (Raw Data): Raw JSON response is stored in the first S3 bucket.
 
-Intermediate Zone (Staging): A Lambda function copies raw files into a staging bucket.
+- Intermediate Zone (Staging): A Lambda function copies raw files into a staging bucket.
 
-Transform: Another Lambda function cleans and transforms JSON → CSV with only required fields.
+- Transform: Another Lambda function cleans and transforms JSON → CSV with only required fields.
 
-Transformed Zone: The cleaned CSV is uploaded into the final S3 bucket.
+- Transformed Zone: The cleaned CSV is uploaded into the final S3 bucket.
 
-Load: Transformed data is ingested into Amazon Redshift.
+- Load: Transformed data is ingested into Amazon Redshift.
 
-Visualize: Amazon QuickSight dashboards provide property insights (price, rent, bedrooms, etc.).
+- Visualize: Amazon QuickSight dashboards provide property insights (price, rent, bedrooms, etc.).
 
 ### Tech Stack
 
