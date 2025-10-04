@@ -32,94 +32,90 @@ The architecture follows a multi-zone S3 design (Landing → Intermediate → Tr
 
 ### Tech Stack
 
-Python (Data extraction & transformations)
+- **Python** (Data extraction & transformations)
 
-Apache Airflow (on EC2) – Orchestration
+- **Apache Airflow (on EC2)** – Orchestration
 
-Amazon S3 – Landing, Intermediate, and Transformed zones
+- **Amazon S3** – Landing, Intermediate, and Transformed zones
 
-AWS Lambda – Copy + Transform functions
+- **AWS Lambda** – Copy + Transform functions
 
-Amazon Redshift – Data Warehouse
+- **Amazon Redshift** – Data Warehouse
 
-Amazon QuickSight – BI & Visualization
+- **Amazon QuickSight** – BI & Visualization
 
-RapidAPI (Zillow API) – Data Source
+- **RapidAPI (Zillow API)** – Data Source
 
 #### Outcomes
 
-Designed and deployed a production-style AWS pipeline.
+- Designed and deployed a production-style AWS pipeline.
 
-Built a scalable, serverless data architecture using S3 + Lambda.
+- Built a scalable, serverless data architecture using S3 + Lambda.
 
-Automated end-to-end pipeline execution with Airflow DAGs.
+- Automated end-to-end pipeline execution with Airflow DAGs.
 
-Transformed unstructured API JSON → structured CSV ready for analytics.
+- Transformed unstructured API JSON → structured CSV ready for analytics.
 
-Created QuickSight dashboards for real estate trends (e.g., avg price per city, rent vs. sale prices, home types).
+- Created QuickSight dashboards for real estate trends (e.g., avg price per city, rent vs. sale prices, home types).
 
 ### Challenges & Solutions
 
-Nested JSON Structure
+###### Nested JSON Structure
 
-Problem: API returned deeply nested JSON with unused fields.
+- Problem: API returned deeply nested JSON with unused fields.
 
-Solution: Lambda script flattened the JSON and kept only relevant attributes (bathrooms, bedrooms, city, homeStatus, homeType, livingArea, price, rentZestimate, zipcode).
+- Solution: Lambda script flattened the JSON and kept only relevant attributes (bathrooms, bedrooms, city, homeStatus, homeType, livingArea, price, rentZestimate, zipcode).
 
-Lambda Trigger Race Condition
+###### Lambda Trigger Race Condition
 
-Problem: Lambda triggered before file upload completed in S3, causing empty reads.
+- Problem: Lambda triggered before file upload completed in S3, causing empty reads.
 
-Solution: Added object_exists waiter to ensure file was available before processing.
+- Solution: Added object_exists waiter to ensure file was available before processing.
 
-Airflow AWS Connection Issue
+###### Airflow AWS Connection Issue
 
-Problem: Airflow UI didn’t show Access/Secret Key fields.
+- Problem: Airflow UI didn’t show Access/Secret Key fields.
 
-Solution: Configured AWS credentials via environment variables and used them in Airflow connections.
+- Solution: Configured AWS credentials via environment variables and used them in Airflow connections.
 
-QuickSight Dataset Refresh
+###### QuickSight Dataset Refresh
 
-Problem: QuickSight dashboards didn’t reflect latest Redshift updates.
+- Problem: QuickSight dashboards didn’t reflect latest Redshift updates.
 
-Solution: Enabled auto-refresh and manual sync of datasets.
+- Solution: Enabled auto-refresh and manual sync of datasets.
 
-Multi-bucket Management Confusion
+###### Multi-bucket Management Confusion
 
-Problem: Mixing up Landing, Staging, and Transformed zones.
+- Problem: Mixing up Landing, Staging, and Transformed zones.
 
-Solution: Followed naming convention project-landing, project-staging, project-transformed and documented clearly.
-
-#### Sample Dashboard
-
-![alt text](image.png)
+- Solution: Followed naming convention project-landing, project-staging, project-transformed and documented clearly.
 
 #### How to Run
 
-Clone this repository
+- Clone this repository
 
-Configure your AWS credentials (IAM role or Access Keys)
+- Configure your AWS credentials (IAM role or Access Keys)
 
-Deploy Airflow DAGs on an EC2 instance
+- Deploy Airflow DAGs on an EC2 instance
 
-Set up three S3 buckets (Landing, Staging, Transformed)
+- Set up three S3 buckets (Landing, Staging, Transformed)
 
-Deploy AWS Lambda functions for copy + transform steps
+- Deploy AWS Lambda functions for copy + transform steps
 
-Create Redshift cluster and copy transformed data
+- Create Redshift cluster and copy transformed data
 
-Connect QuickSight to Redshift and build dashboards
+- Connect QuickSight to Redshift and build dashboards
 
 #### Key Learning
 
-This project helped me learn how to:
+- This project helped me learn how to:
 
-Design production-ready AWS pipelines
+- Design production-ready AWS pipelines
 
-Handle multi-zone S3 data lakes
+- Handle multi-zone S3 data lakes
 
-Integrate Airflow, Lambda, Redshift, and QuickSight end-to-end
+- Integrate Airflow, Lambda, Redshift, and QuickSight end-to-end
 
-Debug orchestration + cloud resource issues in real workflows
+- Debug orchestration + cloud resource issues in real workflows
 
 🔗 This project is part of my Data Engineering portfolio. Feel free to fork, explore, and share feedback!
