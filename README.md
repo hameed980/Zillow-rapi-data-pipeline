@@ -60,7 +60,7 @@ The architecture follows a multi-zone S3 design (Landing → Intermediate → Tr
 
 ## Challenges & Solutions
 
-#### - Nested JSON Structure
+####  Nested JSON Structure
 
 - Problem: API returned deeply nested JSON with unused fields.
 
@@ -84,7 +84,7 @@ The architecture follows a multi-zone S3 design (Landing → Intermediate → Tr
 
 - Solution: Enabled auto-refresh and manual sync of datasets.
 
-###### Multi-bucket Management Confusion
+#### Multi-bucket Management Confusion
 
 - Problem: Mixing up Landing, Staging, and Transformed zones.
 
